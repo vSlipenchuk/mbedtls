@@ -635,6 +635,11 @@ static int x509_get_ext_key_usage(unsigned char **p,
  * NOTE: we only parse and use anyPolicy without qualifiers at this point
  * as defined in RFC 5280.
  */
+
+static int flag_skip_oid_anypolicy = 0;
+void mbedtls_ssl_skip_oid_anypolicy(int flag);
+void mbedtls_ssl_skip_oid_anypolicy(int flag) { flag_skip_oid_anypolicy=flag;}
+
 static int x509_get_certificate_policies(unsigned char **p,
                                          const unsigned char *end,
                                          mbedtls_x509_sequence *certificate_policies)
@@ -695,7 +700,7 @@ static int x509_get_certificate_policies(unsigned char **p,
              * Set the parsing return code but continue parsing, in case this
              * extension is critical.
              */
-            parse_ret = MBEDTLS_ERR_X509_FEATURE_UNAVAILABLE;
+            parse_ret = flag_skip_oid_anypolicy?0:MBEDTLS_ERR_X509_FEATURE_UNAVAILABLE;
         }
 
         /* Allocate and assign next pointer */

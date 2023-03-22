@@ -5314,6 +5314,13 @@ int  mbedtls_ssl_tls_prf(const mbedtls_tls_prf_types prf,
                          const unsigned char *random, size_t rlen,
                          unsigned char *dstbuf, size_t dlen);
 
+/*
+   set skiping checking anypolicy, default:0 (X509_crt.c line:705)
+   static flag_skip_oid_anypolicy = 0; // x509_crt.c
+*/
+
+void mbedtls_ssl_skip_oid_anypolicy(int flag);
+
 #ifdef __cplusplus
 }
 #endif
